@@ -1,7 +1,113 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MyApp3());
+}
+
+class MyApp3 extends StatelessWidget {
+  List<Widget> itemViews = [];
+  @override
+  Widget build(BuildContext context) {
+    final title = 'Grid List';
+
+    return MaterialApp(
+      title: title,
+      home: DemoHome(),
+    );
+  }
+
+
+}
+
+class DemoHome extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    
+    return _DemoHomeState();
+  }
+  
+}
+
+class _DemoHomeState extends State<DemoHome> {
+  List<Widget> itemViews = [];
+  GlobalKey _keyListView = GlobalKey();
+  double boxHeigh = 100;
+  double boxWidth = 100;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+    super.initState();
+  }
+
+  _afterLayout(_) {
+    final RenderBox renderBoxRed = _keyListView.currentContext.findRenderObject();
+    final sizeRed = renderBoxRed.size;
+    print("SIZE of Red: $sizeRed");
+
+    var eachWidth = sizeRed.width/3;
+    setState(() {
+      boxHeigh = eachWidth;
+      boxWidth = eachWidth;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    
+    
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Dynamic list"),
+        ),
+        body: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              height: boxHeigh,
+              child: Scrollbar(
+                child: ListView.builder(
+                  key: _keyListView,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: itemViews.length,
+                  itemBuilder: (context, index) {
+                    return _createItemView();
+                  },
+              ),
+              ),
+            )
+          ],
+        )
+,
+        floatingActionButton: fab(),
+      );
+  }
+
+  Widget fab() => FloatingActionButton(
+      child: Icon(Icons.add_box),
+      onPressed: () {
+        setState(() {
+          itemViews.add(_createItemView());
+        });
+      },
+  );
+
+  Widget _createItemView() {
+    return Card(
+      child: SizedBox(
+        height: boxHeigh,
+        width: boxWidth,
+        child: IconButton(
+          icon: Icon(Icons.add_a_photo),
+          color: Colors.blue,
+          onPressed: () {
+          
+          },
+        ),
+      ),
+    );
+
+  }
 }
 
 class MyApp extends StatelessWidget {

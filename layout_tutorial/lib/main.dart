@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:layout_tutorial/FavoriteWidget.dart';
 
 void main() => runApp(MyApp());
 
@@ -120,12 +121,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 )
               ],),
             ),
-          Icon(
-            Icons.star,
-            color: Colors.red[500],
-          ),
-          Text('41')  
-        ],),
+          FavoriteWidget(),
+          ],
+        ),
       );
 
     Widget textSection = Container(
