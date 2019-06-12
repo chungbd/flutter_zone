@@ -1,18 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:camera/camera.dart';
+import 'dart:io';
+import 'package:path/path.dart' show join;
+import 'package:path_provider/path_provider.dart';
+import 'package:image_picker/image_picker.dart';
 
-void main() {
-  runApp(MyApp3());
+void main() async {
+  final cameras = await availableCameras();
+
+  // Get a specific camera from the list of available cameras.
+  final firstCamera = cameras.first;
+
+  runApp(MyApp3(
+    camera: firstCamera,
+  ));
 }
 
 class MyApp3 extends StatelessWidget {
-  List<Widget> itemViews = [];
+  final CameraDescription camera;
+
+  MyApp3({ @required this.camera});
+
   @override
   Widget build(BuildContext context) {
     final title = 'Grid List';
 
     return MaterialApp(
       title: title,
-      home: DemoHome(),
+      home: DemoHome(
+        camera: camera,
+      ),
     );
   }
 
@@ -20,6 +37,13 @@ class MyApp3 extends StatelessWidget {
 }
 
 class DemoHome extends StatefulWidget {
+  final CameraDescription camera;
+
+  const DemoHome({
+    Key key,
+    @required this.camera,
+  }) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     
@@ -33,11 +57,29 @@ class _DemoHomeState extends State<DemoHome> {
   GlobalKey _keyListView = GlobalKey();
   double boxHeigh = 100;
   double boxWidth = 100;
+  CameraController _controller;
+  Future<void> _initializeControllerFuture;
+  
+  File _imageFile;
+  dynamic _pickImageError;
+  bool isVideo = false;
+  String _retrieveDataError;
 
   @override
   void initState() {
+    onPressFloatingBtn();
     WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
     super.initState();
+
+        _controller = CameraController(
+      // Get a specific camera from the list of available cameras.
+      widget.camera,
+      // Define the resolution to use.
+      ResolutionPreset.medium,
+    );
+
+    // Next, initialize the controller. This returns a Future.
+    _initializeControllerFuture = _controller.initialize();
   }
 
   _afterLayout(_) {
@@ -52,47 +94,109 @@ class _DemoHomeState extends State<DemoHome> {
     });
   }
 
+  void _onImageButtonPressed(ImageSource source) async {
+    if (_controller != null) {
+    }
+
+    try {
+      _imageFile = await ImagePicker.pickImage(source: source);
+    } catch (e) {
+      _pickImageError = e;
+    }
+    setState(() {
+      itemViews.add(_createImageItem(_imageFile));
+    });
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
-    
-    
+  
     return Scaffold(
         appBar: AppBar(
           title: Text("Dynamic list"),
         ),
-        body: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Container(
-              height: boxHeigh,
-              child: Scrollbar(
-                child: ListView.builder(
-                  key: _keyListView,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: itemViews.length,
-                  itemBuilder: (context, index) {
-                    return _createItemView();
-                  },
-              ),
-              ),
-            )
-          ],
-        )
-,
+        body: buildGridView(),
         floatingActionButton: fab(),
       );
   }
 
+        //   Column(
+        //   mainAxisSize: MainAxisSize.min,
+        //   children: <Widget>[
+        //     Container(
+        //       height: boxHeigh,
+        //       child: Scrollbar(
+        //         child: ListView.builder(
+        //           key: _keyListView,
+        //           scrollDirection: Axis.horizontal,
+        //           itemCount: itemViews.length,
+        //           itemBuilder: (context, index) {
+        //             return _createItemView();
+        //           },
+        //       ),
+        //       ),
+        //     )
+        //   ],
+        // )
+
+    Widget buildGridView() {
+      return GridView.count(
+        key: _keyListView,
+        crossAxisCount: 3,
+        children: List.generate(itemViews.length, (index) {
+          var itemView = itemViews[index];
+          return itemView;
+        }),
+      );
+    }
+
+    onPressFloatingBtn() {
+      setState(() {
+        itemViews.add(_createTakePictureItem());
+      });
+    }
+
+  onPressTakepicture() async {
+    _onImageButtonPressed(ImageSource.camera);
+    return;
+
+    try {
+      // Ensure that the camera is initialized.
+      await _initializeControllerFuture;
+
+      // Construct the path where the image should be saved using the 
+      // pattern package.
+      final path = join(
+        // Store the picture in the temp directory.
+        // Find the temp directory using the `path_provider` plugin.
+        (await getTemporaryDirectory()).path,
+        '${DateTime.now()}.png',
+      );
+
+      // Attempt to take a picture and log where it's been saved.
+      await _controller.takePicture(path);
+
+      // If the picture was taken, display it on a new screen.
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DisplayPictureScreen(imagePath: path),
+        ),
+      );
+    } catch (e) {
+      // If an error occurs, log the error to the console.
+      print(e);
+    }
+  }
+
   Widget fab() => FloatingActionButton(
       child: Icon(Icons.add_box),
-      onPressed: () {
-        setState(() {
-          itemViews.add(_createItemView());
-        });
-      },
+      onPressed: onPressFloatingBtn,
   );
 
-  Widget _createItemView() {
+  Widget _createTakePictureItem() {
     return Card(
       child: SizedBox(
         height: boxHeigh,
@@ -100,13 +204,37 @@ class _DemoHomeState extends State<DemoHome> {
         child: IconButton(
           icon: Icon(Icons.add_a_photo),
           color: Colors.blue,
-          onPressed: () {
-          
-          },
+          onPressed: onPressTakepicture,
         ),
       ),
     );
+  }
 
+  Widget _createImageItem(File imgFile) {
+    return Card(
+      child: SizedBox(
+        height: boxHeigh,
+        width: boxWidth,
+        child: Image.file(imgFile),
+      ),
+    );
+  }
+}
+
+// A widget that displays the picture taken by the user.
+class DisplayPictureScreen extends StatelessWidget {
+  final String imagePath;
+
+  const DisplayPictureScreen({Key key, this.imagePath}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Display the Picture')),
+      // The image is stored as a file on the device. Use the `Image.file`
+      // constructor with the given path to display the image.
+      body: Image.file(File(imagePath)),
+    );
   }
 }
 
