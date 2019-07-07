@@ -1,3 +1,4 @@
+import 'package:editing_popup/input_popup.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());
@@ -14,9 +15,40 @@ class MyApp extends StatelessWidget {
             theme: new ThemeData(
                 primarySwatch: Colors.blue,
             ),
-            home: new MyHomePage(title: 'Flutter Demo Home Page'),
+            home: HomePage(),
         );
     }
+}
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var body = Container(
+          child: 
+            Center(
+              child: 
+                RaisedButton(
+                  child: Text("Show input popup"),
+                  onPressed: () {
+                        var inputPopup = InputPopup(
+                          labelTitle: "Ngày tháng năm sinh ()",
+                        );
+
+                        Navigator.of(context).push(PageRouteBuilder(
+                            opaque: false,
+                            pageBuilder: (BuildContext context, _, __) {
+                                return inputPopup;
+                            }
+                        ));
+                  },
+                ),
+            ),
+        );
+    var scafold = Scaffold(
+      body: body,
+    );
+    return scafold;
+  }
 }
 
 class MyHomePage extends StatefulWidget {
