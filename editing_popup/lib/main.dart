@@ -1,4 +1,5 @@
 import 'package:editing_popup/input_popup.dart';
+import 'package:editing_popup/rule.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());
@@ -31,7 +32,11 @@ class HomePage extends StatelessWidget {
                   child: Text("Show input popup"),
                   onPressed: () {
                         var inputPopup = InputPopup(
-                          labelTitle: "Ngày tháng năm sinh ()",
+                          labelTitle: "Ngày tháng năm sinh(*)",
+                          listRule: [Rule.notEmpty],
+                          onSubmitText: (value) {
+                            print("onSubmitText $value");
+                          },
                         );
 
                         Navigator.of(context).push(PageRouteBuilder(

@@ -1,21 +1,29 @@
+import 'package:editing_popup/input_view.dart';
+import 'package:editing_popup/rule.dart';
 import 'package:flutter/material.dart';
 
 class InputPopup extends StatefulWidget {
   final String labelTitle;
-
+  final String textContent;
+  final List<Rule> listRule;
+  final ValueChanged onSubmitText;
   InputPopup({ 
-    @required this.labelTitle 
+    @required this.labelTitle,
+    @required this.listRule,
+    this.onSubmitText,
+    this.textContent,
     });
 
   @override
   State<StatefulWidget> createState() {
-    
-    return InputPopupState();
+    return _InputPopupState();
   }
 }
 
-class InputPopupState extends State<InputPopup> {
+class _InputPopupState extends State<InputPopup> {
   bool isValidated = false;
+  final _formKey = GlobalKey<FormState>();
+  String curText = "";
 
   @override
   Widget build(BuildContext context) {
@@ -42,12 +50,26 @@ class InputPopupState extends State<InputPopup> {
                       new Container(
                           color: Colors.white,
                           padding: new EdgeInsets.symmetric(horizontal: 8),
-                          child: new TextField(
-                              autofocus: true,
-                              decoration: new InputDecoration(
-                                  labelText: widget.labelTitle,
-                              ),
-                          ),
+                          child: 
+                            Form(
+                              key: _formKey,
+                              child: 
+                                InputView(
+                                  labelString: widget.labelTitle,
+                                  autoFocus:true,
+                                  rules:widget.listRule,
+                                  textContent:widget.textContent,
+                                  textOnChange: (val) {
+                                    curText = val;
+                                    var isCurrentValid = _formKey.currentState.validate();
+                                    if (isCurrentValid != isValidated) {
+                                      setState(() {
+                                        isValidated = isCurrentValid;  
+                                      });
+                                    }
+                                  },
+                                ),
+                            )
                       ),
                       new Container(
                           color: Colors.white,
@@ -74,9 +96,10 @@ class InputPopupState extends State<InputPopup> {
                                       child: Text("Lưu"),
                                       onPressed: () {
                                         if (isValidated) {
+                                          widget.onSubmitText(curText);
+                                          // If the form is valid, we want to show a Snackbar
                                           Navigator.of(context).pop();
-                                        }
-                                        
+                                        }  
                                     },),
                                 ),                             
                               ],)
