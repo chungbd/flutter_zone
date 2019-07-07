@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());
 
+
+
+
 class MyApp extends StatelessWidget {
     // This widget is the root of your application.
     @override
@@ -45,11 +48,33 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: Colors.white,
                         padding: new EdgeInsets.all(10.0),
                         child: new TextField(
+                            autofocus: true,
                             decoration: new InputDecoration(
                                 hintText: 'Chat message',
                             ),
                         ),
                     ),
+                    new Container(
+                        color: Colors.white,
+                        padding: new EdgeInsets.only(bottom: 10, left: 10, right: 10),
+                        child: 
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: 
+                                  RaisedButton(onPressed: () {
+
+                                  },),
+                              ),
+                              SizedBox(width: 8,),
+                              Expanded(
+                                child: 
+                                  RaisedButton(onPressed: () {
+
+                                  },),
+                              ),                             
+                            ],)
+                    ),                    
                 ],
             ),
         );
