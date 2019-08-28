@@ -23,6 +23,7 @@ class _TapboxAState extends State<TapboxA> {
   }
 
   Widget build(BuildContext context) {
+    print("TapboxA build");
     return GestureDetector(
       onTap: _handleTap,
       child: Container(
@@ -47,14 +48,23 @@ class _TapboxAState extends State<TapboxA> {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print("MyApp build");
     return MaterialApp(
       title: 'Flutter Demo',
       home: Scaffold(
         appBar: AppBar(
           title: Text('Flutter Demo'),
         ),
-        body: Center(
-          child: TapboxA(),
+        body: 
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children:
+            [
+              TapboxA(),
+              ParentWidget(),
+            ] 
+          ),
         ),
       ),
     );
@@ -81,6 +91,7 @@ class _ParentWidgetState extends State<ParentWidget> {
 
   @override
   Widget build(BuildContext context) {
+    print("_ParentWidgetState build");
     return Container(
       child: TapboxB(
         active: _active,
@@ -104,6 +115,7 @@ class TapboxB extends StatelessWidget {
   }
 
   Widget build(BuildContext context) {
+    print("TapboxB build");
     return GestureDetector(
       onTap: _handleTap,
       child: Container(
