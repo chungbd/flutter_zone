@@ -31,6 +31,7 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_finder/BLoC/bloc_provider.dart';
 import 'package:restaurant_finder/BLoC/location_bloc.dart';
+import 'BLoC/favorite_bloc.dart';
 import 'UI/main_screen.dart';
 
 void main() => runApp(RestaurantFinder());
@@ -38,12 +39,15 @@ void main() => runApp(RestaurantFinder());
 class RestaurantFinder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var app = MaterialApp(
-      title: 'Restaurant Finder',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
+    var app = BlocProvider<FavoriteBloc>(
+      bloc: FavoriteBloc(),
+      child: MaterialApp(
+        title: 'Restaurant Finder',
+        theme: ThemeData(
+          primarySwatch: Colors.red,
+        ),
+        home: MainScreen(),
       ),
-      home: MainScreen(),
     );
 
     return BlocProvider(bloc: LocationBloc(), child: app);
