@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 void main() {
   runApp(MyApp());
@@ -147,9 +148,30 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildScrollable(BuildContext context) {
     return CustomScrollView(
       slivers: <Widget>[
+        SliverToBoxAdapter(
+          child: FlutterLogo(),
+        ),
         SliverAppBar(
           title: Text("Hello"),
+          // pinned: true,
+          // floating: true,
+          expandedHeight: 200,
+          flexibleSpace: Placeholder(),
+        ),
+        SliverChung(
+          child: Container(child: Text("Hi")),
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.all(16.0),
+          sliver: SliverList(
+            delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) =>
+                    _buildTile(context, samples[index]),
+                childCount: samples.length),
+          ),
         )
+        // SliverChildListDelegate(
+        //     samples.map((e) => _buildTile(context, e)).toList()))
       ],
     );
     return ListView(
@@ -161,5 +183,47 @@ class _MyHomePageState extends State<MyHomePage> {
     return ListTile(
       title: Text(content),
     );
+  }
+}
+
+class SliverChung extends SingleChildRenderObjectWidget {
+  SliverChung({Key key, Widget child}) : super(key: key, child: child);
+  @override
+  RenderObject createRenderObject(BuildContext context) {
+    return RenderSliverChung();
+  }
+}
+
+class RenderSliverChung extends RenderSliverSingleBoxAdapter {
+  RenderSliverChung({RenderBox child}) : super(child: child);
+  @override
+  void performLayout() {
+    if (child == null) {
+      geometry = SliverGeometry.zero;
+      return;
+    }
+    final SliverConstraints constraints = this.constraints;
+    child.layout(constraints.asBoxConstraints(), parentUsesSize: true);
+    double childExtent;
+    switch (constraints.axis) {
+      case Axis.horizontal:
+        childExtent = child.size.width;
+        break;
+      case Axis.vertical:
+        childExtent = child.size.height;
+        break;
+    }
+    assert(childExtent != null);
+
+    geometry = SliverGeometry(
+      scrollExtent: childExtent,
+      paintExtent: 75,
+      cacheExtent: cacheExtent,
+      maxPaintExtent: childExtent,
+      hitTestExtent: paintedChildSize,
+      hasVisualOverflow: childExtent > constraints.remainingPaintExtent ||
+          constraints.scrollOffset > 0.0,
+    );
+    setChildParentData(child, constraints, geometry);
   }
 }
