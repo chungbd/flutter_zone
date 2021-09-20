@@ -1,6 +1,7 @@
-import 'package:animation_daily/screens/animated_default_text_style.dart';
 import 'package:flutter/widgets.dart';
 
+import '../screens/animated_container.dart';
+import '../screens/animated_default_text_style.dart';
 import '../screens/animated_positioned.dart';
 import '../screens/animated_size_screen.dart';
 
@@ -16,6 +17,13 @@ class ScreenInfor {
 }
 
 List<ScreenInfor> screens = [
+  ScreenInfor(
+      name: "Day 4: Animated Container",
+      description: """
+          """,
+      instance: (infor) => AnimatedContainerScreen(
+            infor: infor,
+          )),
   ScreenInfor(
       name: "Day 3: Animated Default Text Style",
       description: """
