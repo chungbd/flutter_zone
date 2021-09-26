@@ -1,3 +1,4 @@
+import 'package:animation_daily/screens/animated_align.dart';
 import 'package:flutter/widgets.dart';
 
 import '../screens/animated_container.dart';
@@ -17,6 +18,13 @@ class ScreenInfor {
 }
 
 List<ScreenInfor> screens = [
+  ScreenInfor(
+      name: "Day 5: Animated Align",
+      description: """
+          """,
+      instance: (infor) => AnimatedAlignScreen(
+            infor: infor,
+          )),
   ScreenInfor(
       name: "Day 4: Animated Container",
       description: """
