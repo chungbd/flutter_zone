@@ -2,9 +2,10 @@ import 'package:animation_daily/constrains/screens.dart';
 import 'package:animation_daily/screens/base_screen.dart';
 import 'package:flutter/material.dart';
 
-class AnimatedContainerScreen extends StatefulWidget {
+class AnimatedContainerScreen extends BaseScreen {
   const AnimatedContainerScreen({Key? key, this.infor}) : super(key: key);
 
+  @override
   final ScreenInfor? infor;
 
   @override

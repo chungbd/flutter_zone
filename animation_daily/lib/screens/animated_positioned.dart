@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'base_screen.dart';
 
-class AnimatedPositionedScreen extends StatefulWidget {
+class AnimatedPositionedScreen extends BaseScreen {
   const AnimatedPositionedScreen({Key? key, this.infor}) : super(key: key);
 
   final ScreenInfor? infor;

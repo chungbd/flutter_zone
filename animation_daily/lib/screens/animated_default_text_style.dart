@@ -3,10 +3,11 @@ import 'package:animation_daily/screens/base_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class AnimatedDefaultTextStyleScreen extends StatefulWidget {
+class AnimatedDefaultTextStyleScreen extends BaseScreen {
   const AnimatedDefaultTextStyleScreen({Key? key, this.infor})
       : super(key: key);
 
+  @override
   final ScreenInfor? infor;
 
   @override
@@ -44,7 +45,4 @@ class _AnimatedDefaultTextStyleScreenState
       selected = !selected;
     });
   }
-
-  @override
-  String? get titleScreen => widget.infor?.name ?? "";
 }
