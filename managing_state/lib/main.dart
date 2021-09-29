@@ -55,16 +55,10 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text('Flutter Demo'),
         ),
-        body: 
-        Center(
+        body: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children:
-            [
-              TapboxA(),
-              ParentWidget(),
-            ] 
-          ),
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [TapboxA(), ParentWidget(), ParentWidgetA()]),
         ),
       ),
     );
@@ -137,30 +131,31 @@ class TapboxB extends StatelessWidget {
 
 //---------------------------- ParentWidget ----------------------------
 
-// class ParentWidget extends StatefulWidget {
-//   @override
-//   _ParentWidgetState createState() => _ParentWidgetState();
-// }
+class ParentWidgetA extends StatefulWidget {
+  @override
+  _ParentWidgetAState createState() => _ParentWidgetAState();
+}
 
-// class _ParentWidgetState extends State<ParentWidget> {
-//   bool _active = false;
+class _ParentWidgetAState extends State<ParentWidgetA> {
+  bool _active = false;
 
-//   void _handleTapboxChanged(bool newValue) {
-//     setState(() {
-//       _active = newValue;
-//     });
-//   }
+  void _handleTapboxChanged(bool newValue) {
+    setState(() {
+      _active = newValue;
+    });
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       child: TapboxC(
-//         active: _active,
-//         onChanged: _handleTapboxChanged,
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    print("ParentWidgetA build");
+    return Container(
+      child: TapboxC(
+        active: _active,
+        onChanged: _handleTapboxChanged,
+      ),
+    );
+  }
+}
 
 //----------------------------- TapboxC ------------------------------
 
@@ -200,6 +195,7 @@ class _TapboxCState extends State<TapboxC> {
   }
 
   Widget build(BuildContext context) {
+    print("TapboxC build");
     // This example adds a green border on tap down.
     // On tap up, the square changes to the opposite state.
     return GestureDetector(
@@ -215,8 +211,7 @@ class _TapboxCState extends State<TapboxC> {
         width: 200.0,
         height: 200.0,
         decoration: BoxDecoration(
-          color:
-              widget.active ? Colors.lightGreen[700] : Colors.grey[600],
+          color: widget.active ? Colors.lightGreen[700] : Colors.grey[600],
           border: _highlight
               ? Border.all(
                   color: Colors.teal[700],
