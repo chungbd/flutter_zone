@@ -100,9 +100,6 @@ class _AnimatedContainerScreenState extends State<AnimatedContainerScreen>
     );
   }
 
-  @override
-  String? get titleScreen => widget.infor?.name;
-
   Widget textWidget(width) => Container(
         width: width / 2,
         padding: EdgeInsets.all(5),

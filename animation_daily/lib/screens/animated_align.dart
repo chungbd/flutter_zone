@@ -22,6 +22,8 @@ class _AnimatedAlignScreenState extends State<AnimatedAlignScreen>
 }
 
 class Animation5 extends StatefulWidget {
+  const Animation5({Key? key}) : super(key: key);
+
   @override
   _Animation5State createState() => _Animation5State();
 }
@@ -38,7 +40,7 @@ class _Animation5State extends State<Animation5> {
           height: 180.0,
           color: Colors.blue,
         ),
-        Container(
+        SizedBox(
           width: double.infinity,
           height: 180.0 + iconSize / 3,
           child: AnimatedAlign(

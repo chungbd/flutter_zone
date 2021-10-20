@@ -1,10 +1,12 @@
-import 'package:animation_daily/screens/animated_align.dart';
 import 'package:flutter/widgets.dart';
 
+import '../screens/animated_align.dart';
 import '../screens/animated_container.dart';
 import '../screens/animated_default_text_style.dart';
+import '../screens/animated_opacity.dart';
 import '../screens/animated_positioned.dart';
 import '../screens/animated_size_screen.dart';
+import '../screens/elatis_drawer.dart';
 
 class ScreenInfor {
   final String name;
@@ -18,6 +20,20 @@ class ScreenInfor {
 }
 
 List<ScreenInfor> screens = [
+  ScreenInfor(
+      name: "Day 7: Elatis Drawer",
+      description: """
+          """,
+      instance: (infor) => ElatisDrawer(
+            infor: infor,
+          )),
+  ScreenInfor(
+      name: "Day 6: Animated Opacity",
+      description: """
+          """,
+      instance: (infor) => AnimatedOpacityScreen(
+            infor: infor,
+          )),
   ScreenInfor(
       name: "Day 5: Animated Align",
       description: """

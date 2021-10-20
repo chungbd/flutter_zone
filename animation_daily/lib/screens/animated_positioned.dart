@@ -6,6 +6,7 @@ import 'base_screen.dart';
 class AnimatedPositionedScreen extends BaseScreen {
   const AnimatedPositionedScreen({Key? key, this.infor}) : super(key: key);
 
+  @override
   final ScreenInfor? infor;
 
   @override
@@ -41,9 +42,6 @@ class _AnimatedPositionedScreenState extends State<AnimatedPositionedScreen>
       ),
     );
   }
-
-  @override
-  String? get titleScreen => widget.infor?.name;
 
   bottomPosition(double height) =>
       _position == Positions.top ? height - 150.0 : 0.0;
