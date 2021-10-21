@@ -8,10 +8,17 @@ mixin ScaffoldBase<Screen extends BaseScreen> on State<Screen> {
         appBar: AppBar(
           title: Text(widget.infor?.name ?? ""),
         ),
-        body: createBody(context));
+        body: WillPopScope(
+          child: createBody(context),
+          onWillPop: () => Future.value(willPop),
+        ));
   }
 
   Widget createBody(BuildContext context);
+
+  bool get willPop {
+    return true;
+  }
 }
 
 abstract class ScreenBase {

@@ -6,6 +6,7 @@ import '../screens/animated_default_text_style.dart';
 import '../screens/animated_opacity.dart';
 import '../screens/animated_positioned.dart';
 import '../screens/animated_size_screen.dart';
+import '../screens/curved_navigation_bar.dart';
 import '../screens/elatis_drawer.dart';
 
 class ScreenInfor {
@@ -20,6 +21,12 @@ class ScreenInfor {
 }
 
 List<ScreenInfor> screens = [
+  ScreenInfor(
+      name: "Day 8: Curved Navigation Bar",
+      description: "",
+      instance: (infor) => CurvedNavigationBarScreen(
+            infor: infor,
+          )),
   ScreenInfor(
       name: "Day 7: Elatis Drawer",
       description: """

@@ -36,4 +36,7 @@ class _ElatisDrawerState extends State<ElatisDrawer> with ScaffoldBase {
       ]),
     );
   }
+
+  @override
+  bool get willPop => false;
 }
