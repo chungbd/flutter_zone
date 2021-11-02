@@ -8,6 +8,7 @@ import '../screens/animated_positioned.dart';
 import '../screens/animated_size_screen.dart';
 import '../screens/curved_navigation_bar.dart';
 import '../screens/elatis_drawer.dart';
+import '../screens/liquid_swipe_screen.dart';
 
 class ScreenInfor {
   final String name;
@@ -21,6 +22,12 @@ class ScreenInfor {
 }
 
 List<ScreenInfor> screens = [
+  ScreenInfor(
+      name: "Day 9: Liquid Swipe",
+      description: "",
+      instance: (infor) => LiquidSwipeScreen(
+            infor: infor,
+          )),
   ScreenInfor(
       name: "Day 8: Curved Navigation Bar",
       description: "",
